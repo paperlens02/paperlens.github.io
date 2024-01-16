@@ -251,7 +251,7 @@
 <blockquote>
 <p>思考：*<font color="red">“状态机与行为树，哪个更好？” “MVC和ECS，哪个更适合UI框架？”</font>*<br>设计的逻辑闭环：细节的用户需求 → 对用户和需求的笼统印象 → 对设计本身的定义 → 是否能实现每个细节用户需求，是否能满足用户体验，发挥用户价值 → 随着用户发挥价值，产生新的需求。</p>
 </blockquote>
-<p><img src="/paperlens.github.io/paperlens.github.io/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/relate.png" alt="（顺时针）基于设计形成的逻辑闭环，用户与设计间是螺旋上升的关系"></p>
+<p><img src="/paperlens.github.io/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/relate.png" alt="（顺时针）基于设计形成的逻辑闭环，用户与设计间是螺旋上升的关系"></p>
 <blockquote>
 <p>思考：这种思维方式，只能指导我们如何从需求出发完成一个框架设计。但我们又如何从框架设计反推用户的使用方式，推进用户发挥新的价值？</p>
 </blockquote>
@@ -357,7 +357,7 @@
 <h3 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h3><p>条件是行为的触发器。条件由最简洁的业务逻辑单元构成，条件和行为共同组成属性和逻辑的解耦器。<br>条件虽然包含逻辑，但在这里也被视为一种数据。  </p>
 <h3 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h3><p>实体是一系列数据和业务逻辑单元的聚合。<br>实体的设计为热插拔提供了土壤，并更好的梳理框架分层。  </p>
 <h3 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h3><p>数据是一系列静态属性的聚合。<br>数据层的设计为工具化提供了土壤。  </p>
-<p><img src="/paperlens.github.io/paperlens.github.io/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/basic.png" alt="组成核心玩法框架的设计元"></p>
+<p><img src="/paperlens.github.io/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/basic.png" alt="组成核心玩法框架的设计元"></p>
 <h2 id="5-2-设计原则"><a href="#5-2-设计原则" class="headerlink" title="5.2 设计原则"></a>5.2 设计原则</h2><p>设计原则是指导设计元如何有机结合的<font color="yellow"><em><strong>键</strong></em></font></p>
 <h3 id="组件化、平铺式"><a href="#组件化、平铺式" class="headerlink" title="组件化、平铺式"></a>组件化、平铺式</h3><p>我们的核心玩法阶段繁多、而功能模块间耦合偏少。组件化、平铺式的设计最大的特点是碎片化；而碎片化的设计虽然不利于处理复杂耦合关系，但利于业务逻辑维护和迭代效率，是很适合我们核心玩法的。<br>业务领域自解释<br>如何划分每个设计碎片？我们从领域驱动设计的思路出发，并额外添加一项要求：每一个碎片必须能自解释，即自驱动运行(狭义)、无(轻)依赖、无(松)耦合。这样不仅支持了每个业务领域的热插拔、还省去了管理器等复杂设计模块。<br>属性分层<br>动态属性&#x2F;静态属性；临时属性&#x2F;存档属性<br>编辑器属性&#x2F;实体持久化属性&#x2F;功能临时属性</p>
 <h2 id="工程倾向"><a href="#工程倾向" class="headerlink" title="工程倾向"></a>工程倾向</h2><p>工程倾向是基于业务环境分析，在框架的冗余区域内求索，合理利用框架设计中的伸缩性、延展性的一种工程实践方案。  </p>
