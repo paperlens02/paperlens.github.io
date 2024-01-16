@@ -22,16 +22,17 @@
 
   <meta name="description" content="一、核心玩法框架内容简介1.1 项目现状 较为紧张的开发时间、高频的迭代需求 高创新需求：需求难以具体描述、且常常需要反复尝试和调整 高度基于物理、拟真、随机性的游戏演算过程 分布式无状态的服务器基础框架、低服务器开发支持 中重度的拟真玩法和在线对决1.2 项目需求 一定程度的工具化，提升迭代速度 工具化需要更好的支持创新 更好的拟真性封装实现 基于客户端的核心玩法演算 完整的实时对决机制1.3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Paper">
+<meta property="og:title" content="核心玩法框架设计思路(Fishing Elite)">
 <meta property="og:url" content="https://paperlens02.github.io/paperlens.github.io/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/index.html">
 <meta property="og:site_name" content="Paper">
 <meta property="og:description" content="一、核心玩法框架内容简介1.1 项目现状 较为紧张的开发时间、高频的迭代需求 高创新需求：需求难以具体描述、且常常需要反复尝试和调整 高度基于物理、拟真、随机性的游戏演算过程 分布式无状态的服务器基础框架、低服务器开发支持 中重度的拟真玩法和在线对决1.2 项目需求 一定程度的工具化，提升迭代速度 工具化需要更好的支持创新 更好的拟真性封装实现 基于客户端的核心玩法演算 完整的实时对决机制1.3">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://paperlens02.github.io/paperlens.github.io/paperlens.github/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/relate.png">
 <meta property="og:image" content="https://paperlens02.github.io/paperlens.github.io/paperlens.github/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/basic.png">
-<meta property="article:published_time" content="2024-01-16T08:21:13.600Z">
-<meta property="article:modified_time" content="2024-01-16T09:38:19.794Z">
+<meta property="article:published_time" content="2024-01-16T10:30:00.000Z">
+<meta property="article:modified_time" content="2024-01-16T10:30:48.476Z">
 <meta property="article:author" content="paperlens">
+<meta property="article:tag" content="设计">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://paperlens02.github.io/paperlens.github.io/paperlens.github/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/relate.png">
 
@@ -48,7 +49,7 @@
   };
 </script>
 
-  <title> | Paper</title>
+  <title>核心玩法框架设计思路(Fishing Elite) | Paper</title>
   
 
 
@@ -172,7 +173,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          核心玩法框架设计思路(Fishing Elite)
         </h1>
 
         <div class="post-meta">
@@ -183,7 +184,16 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-01-16 16:21:13 / 修改时间：17:38:19" itemprop="dateCreated datePublished" datetime="2024-01-16T16:21:13+08:00">2024-01-16</time>
+              <time title="创建时间：2024-01-16 18:30:00 / 修改时间：18:30:48" itemprop="dateCreated datePublished" datetime="2024-01-16T18:30:00+08:00">2024-01-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/paperlens.github.io/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
             </span>
 
           
@@ -399,6 +409,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/paperlens.github.io/tags/%E8%AE%BE%E8%AE%A1/" rel="tag"># 设计</a>
+          </div>
 
         
 
@@ -495,7 +508,7 @@
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
