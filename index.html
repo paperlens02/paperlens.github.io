@@ -178,7 +178,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-01-16 18:30:00 / 修改时间：18:30:48" itemprop="dateCreated datePublished" datetime="2024-01-16T18:30:00+08:00">2024-01-16</time>
+              <time title="创建时间：2024-01-16 18:30:00 / 修改时间：18:35:16" itemprop="dateCreated datePublished" datetime="2024-01-16T18:30:00+08:00">2024-01-16</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,7 +251,7 @@
 <blockquote>
 <p>思考：*<font color="red">“状态机与行为树，哪个更好？” “MVC和ECS，哪个更适合UI框架？”</font>*<br>设计的逻辑闭环：细节的用户需求 → 对用户和需求的笼统印象 → 对设计本身的定义 → 是否能实现每个细节用户需求，是否能满足用户体验，发挥用户价值 → 随着用户发挥价值，产生新的需求。</p>
 </blockquote>
-<p><img src="/paperlens.github.io/paperlens.github/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/relate.png" alt="（顺时针）基于设计形成的逻辑闭环，用户与设计间是螺旋上升的关系"></p>
+<p><img src="/paperlens.github.io/paperlens.github.io/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/relate.png" alt="（顺时针）基于设计形成的逻辑闭环，用户与设计间是螺旋上升的关系"></p>
 <blockquote>
 <p>思考：这种思维方式，只能指导我们如何从需求出发完成一个框架设计。但我们又如何从框架设计反推用户的使用方式，推进用户发挥新的价值？</p>
 </blockquote>
@@ -260,7 +260,7 @@
 </blockquote>
 <p><strong>从用户需求到设计理论的矛盾</strong><br>囿于程序框架设计的表现形式，程序框架设计总结必须是基于先天判断（理论驱动）的，即独立于经验和感官印象，具备普遍性、必然性的；而用户需求常常是基于后天判断（用户驱动）的，即基于感官印象或实践经验，不具备必然性的。我们首先需要通过理论抽象和普适原则的归纳，将来自感官印象和实践经验的后天判断提炼为不受个别案例限制的先天判断，确立其在程序框架设计中的普遍适用性和必然有效性。  </p>
 <p><strong>从框架设计到框架使用的矛盾</strong><br>囿于程序框架设计的功能效用，程序框架设计总结必须是基于综合判断（创造性的）的，即附加性质的、扩充性质的、基于经验认知的；而框架使用者常常需要基于分析判断（解释性的）的结论，即说明性的、必然性的、理论可靠的。我们必须通过精确的逻辑演绎和对细节的严密审查，将基于经验和创造性的综合判断精炼为清晰、明确并具有可验证性的分析判断，以便框架使用者能够理解和信赖这些结论在实际应用中的真实有效性。  </p>
-<p><strong>总结</strong><br>可以看到：框架设计者与他的主要客户（面向的客户、框架使用者）是存在根本矛盾的。因此，**<font color="yellow">框架设计要服务用户，就必须要先剥离用户</font>**。  </p>
+<p><strong>总结</strong><br>可以看到：框架设计者与他的主要客户（面向的客户、框架使用者）是存在根本矛盾的。因此，<font color="yellow"><strong>框架设计要服务用户，就必须要先剥离用户</strong></font>。  </p>
 <blockquote>
 <p>思考：如何统合不同思维方式间的矛盾？<br>可能的答案：从更高抽象层面寻找共性，或有限辩证式的寻找解决方案；批判性的沟通和互相学习；合理妥协，求同（目标）存异（细节）；螺旋式的探索和实践（但要注意成本）  </p>
 </blockquote>
@@ -350,15 +350,15 @@
 <p>艺术家出身的开发者创作会更喜欢 Playmaker，Playmaker 是一种发散型思维，散乱的做，做到哪里想到哪里，随心所欲，发现 Bug 再去纠正；这在前期的创作中非常重要，我没有去花大的精力考虑那些需要注重的程序先后关系，而把精力完全花在了创意上面。</p>
 </blockquote>
 </blockquote>
-<h1 id="五、核心玩法框架-设计简介"><a href="#五、核心玩法框架-设计简介" class="headerlink" title="五、核心玩法框架 - 设计简介"></a>五、核心玩法框架 - 设计简介</h1><h2 id="5-1-设计元"><a href="#5-1-设计元" class="headerlink" title="5.1 设计元"></a>5.1 设计元</h2><p>设计元是框架的基本组成***<font color="yellow">原子</font>***。</p>
+<h1 id="五、核心玩法框架-设计简介"><a href="#五、核心玩法框架-设计简介" class="headerlink" title="五、核心玩法框架 - 设计简介"></a>五、核心玩法框架 - 设计简介</h1><h2 id="5-1-设计元"><a href="#5-1-设计元" class="headerlink" title="5.1 设计元"></a>5.1 设计元</h2><p>设计元是框架的基本组成<font color="yellow"><em><strong>原子</strong></em></font>。</p>
 <h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><p>整个游戏都是由属性(或称数据)组成的。属性是可序列化和反序列化的。属性可以驱动行为的产生。<br>属性的设计为类似帧同步的实时同步机制、回放机制提供了土壤。 </p>
 <h3 id="行为"><a href="#行为" class="headerlink" title="行为"></a>行为</h3><p>行为是一种数据。行为是业务逻辑启动的钥匙。行为数据的生命可能是瞬间的，也可能是有限持续性的。<br>行为的设计为类似状态同步的实时同步机制、回放机制提供了土壤。  </p>
 <h3 id="业务逻辑单元"><a href="#业务逻辑单元" class="headerlink" title="业务逻辑单元"></a>业务逻辑单元</h3><p>业务逻辑单元是一段自解释的逻辑，它是属性的修改器，它描述了属性间的耦合关系。<br>业务逻辑单元的设计反映了领域边界的制定，为平铺式设计和热插拔提供了土壤。  </p>
 <h3 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h3><p>条件是行为的触发器。条件由最简洁的业务逻辑单元构成，条件和行为共同组成属性和逻辑的解耦器。<br>条件虽然包含逻辑，但在这里也被视为一种数据。  </p>
 <h3 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h3><p>实体是一系列数据和业务逻辑单元的聚合。<br>实体的设计为热插拔提供了土壤，并更好的梳理框架分层。  </p>
 <h3 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h3><p>数据是一系列静态属性的聚合。<br>数据层的设计为工具化提供了土壤。  </p>
-<p><img src="/paperlens.github.io/paperlens.github/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/basic.png" alt="组成核心玩法框架的设计元"></p>
-<h2 id="5-2-设计原则"><a href="#5-2-设计原则" class="headerlink" title="5.2 设计原则"></a>5.2 设计原则</h2><p>设计原则是指导设计元如何有机结合的***<font color="yellow">键</font>***</p>
+<p><img src="/paperlens.github.io/paperlens.github.io/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/basic.png" alt="组成核心玩法框架的设计元"></p>
+<h2 id="5-2-设计原则"><a href="#5-2-设计原则" class="headerlink" title="5.2 设计原则"></a>5.2 设计原则</h2><p>设计原则是指导设计元如何有机结合的<font color="yellow"><em><strong>键</strong></em></font></p>
 <h3 id="组件化、平铺式"><a href="#组件化、平铺式" class="headerlink" title="组件化、平铺式"></a>组件化、平铺式</h3><p>我们的核心玩法阶段繁多、而功能模块间耦合偏少。组件化、平铺式的设计最大的特点是碎片化；而碎片化的设计虽然不利于处理复杂耦合关系，但利于业务逻辑维护和迭代效率，是很适合我们核心玩法的。<br>业务领域自解释<br>如何划分每个设计碎片？我们从领域驱动设计的思路出发，并额外添加一项要求：每一个碎片必须能自解释，即自驱动运行(狭义)、无(轻)依赖、无(松)耦合。这样不仅支持了每个业务领域的热插拔、还省去了管理器等复杂设计模块。<br>属性分层<br>动态属性&#x2F;静态属性；临时属性&#x2F;存档属性<br>编辑器属性&#x2F;实体持久化属性&#x2F;功能临时属性</p>
 <h2 id="工程倾向"><a href="#工程倾向" class="headerlink" title="工程倾向"></a>工程倾向</h2><p>工程倾向是基于业务环境分析，在框架的冗余区域内求索，合理利用框架设计中的伸缩性、延展性的一种工程实践方案。  </p>
 <h3 id="主要业务逻辑在C-编写"><a href="#主要业务逻辑在C-编写" class="headerlink" title="主要业务逻辑在C#编写"></a>主要业务逻辑在C#编写</h3><ul>
@@ -366,7 +366,7 @@
 <li>在C#层可以方便的统合基于SO的编辑工具（静态属性）和业务逻辑。  </li>
 <li>基于：行为的设计、业务逻辑单元的解耦、属性的全局性质，Lua可以轻松的观测和修改C#层的业务逻辑执行方式。只要对运行期行为数据进行截取&#x2F;修改&#x2F;观测，即可实现热更需求。</li>
 </ul>
-<h3 id="关于领域间的互相访问和调用"><a href="#关于领域间的互相访问和调用" class="headerlink" title="关于领域间的互相访问和调用"></a>关于领域间的互相访问和调用</h3><p>按照框架设计本意，为维持SOLID原则（主要是开闭原则）、维持属性与逻辑解耦，**<font color="yellow">原则上实体之间是不能互相访问的</font><strong>。业务逻辑中需要访问其它实体的属性时，只能通过属性系统（FishingPropertyWrapper）访问：这样访问到的属性是可靠的、只读的。而业务逻辑无权写外部属性，更无权调用其它实体的业务逻辑单元。<br>但在实际工程实践中，因为业务领域间的边界会随着需求变化而变化、扩充或融合；在这个动态迭代的背景下，业务逻辑单元间的耦合本身就是不可避免的。受开发资源和时间限制，把所有逻辑耦合都用行为解耦是过于麻烦的甚至是不现实的。同时只要我们有意识的处理业务逻辑耦合，耦合所产生的问题就是可控的、可预期的。因此，</strong><font color="yellow">工程实践上允许实体间的互相访问、<u>非异步</u>业务逻辑间的有限互相调用</font>**。  </p>
+<h3 id="关于领域间的互相访问和调用"><a href="#关于领域间的互相访问和调用" class="headerlink" title="关于领域间的互相访问和调用"></a>关于领域间的互相访问和调用</h3><p>按照框架设计本意，为维持SOLID原则（主要是开闭原则）、维持属性与逻辑解耦，<font color="yellow"><strong>原则上实体之间是不能互相访问的</strong></font>。业务逻辑中需要访问其它实体的属性时，只能通过属性系统（FishingPropertyWrapper）访问：这样访问到的属性是可靠的、只读的。而业务逻辑无权写外部属性，更无权调用其它实体的业务逻辑单元。<br>但在实际工程实践中，因为业务领域间的边界会随着需求变化而变化、扩充或融合；在这个动态迭代的背景下，业务逻辑单元间的耦合本身就是不可避免的。受开发资源和时间限制，把所有逻辑耦合都用行为解耦是过于麻烦的甚至是不现实的。同时只要我们有意识的处理业务逻辑耦合，耦合所产生的问题就是可控的、可预期的。因此，<font color="yellow"><strong>工程实践上允许实体间的互相访问、<u>非异步</u>业务逻辑间的有限互相调用</strong></font>。  </p>
 <h3 id="管理器-Manager-x2F-System-与封装器-Wrapper"><a href="#管理器-Manager-x2F-System-与封装器-Wrapper" class="headerlink" title="管理器(Manager&#x2F;System)与封装器(Wrapper)"></a>管理器(Manager&#x2F;System)与封装器(Wrapper)</h3><p>在核心玩法框架设计中，是没有“管理器”的概念的。因为所有的属性和行为（数据）都是开放可读的、所有业务逻辑模块都是自解释的，所以它们各自独立存在于框架环境中，并不需要受某个统一逻辑管理。<br>而为了提升具体开发的便捷性，还是需要一个统一出入口协助访问那些宛如一盘散沙的属性、行为，甚至其它实体。这就是本次核心玩法框架中的封装器”Wrapper”。<br>封装器是作为一种工具类存在的，它主要有以下作用：   </p>
 <ul>
 <li>按字典的形式，统一存储框架内所有属性&#x2F;行为&#x2F;实体的引用，方便查询和访问，也提供筛选等高级功能。</li>
@@ -445,7 +445,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-16 16:01:47" itemprop="dateModified" datetime="2024-01-16T16:01:47+08:00">2024-01-16</time>
+                <time title="修改时间：2024-01-16 18:34:26" itemprop="dateModified" datetime="2024-01-16T18:34:26+08:00">2024-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -526,7 +526,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-16 16:01:47" itemprop="dateModified" datetime="2024-01-16T16:01:47+08:00">2024-01-16</time>
+                <time title="修改时间：2024-01-16 18:34:26" itemprop="dateModified" datetime="2024-01-16T18:34:26+08:00">2024-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -702,7 +702,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-16 16:01:47" itemprop="dateModified" datetime="2024-01-16T16:01:47+08:00">2024-01-16</time>
+                <time title="修改时间：2024-01-16 18:34:26" itemprop="dateModified" datetime="2024-01-16T18:34:26+08:00">2024-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -783,7 +783,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-16 16:01:47" itemprop="dateModified" datetime="2024-01-16T16:01:47+08:00">2024-01-16</time>
+                <time title="修改时间：2024-01-16 18:34:26" itemprop="dateModified" datetime="2024-01-16T18:34:26+08:00">2024-01-16</time>
               </span>
 
           
@@ -847,7 +847,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-16 16:01:47" itemprop="dateModified" datetime="2024-01-16T16:01:47+08:00">2024-01-16</time>
+                <time title="修改时间：2024-01-16 18:34:26" itemprop="dateModified" datetime="2024-01-16T18:34:26+08:00">2024-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1335,7 +1335,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-16 16:01:47" itemprop="dateModified" datetime="2024-01-16T16:01:47+08:00">2024-01-16</time>
+                <time title="修改时间：2024-01-16 18:34:26" itemprop="dateModified" datetime="2024-01-16T18:34:26+08:00">2024-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1445,7 +1445,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-16 16:01:47" itemprop="dateModified" datetime="2024-01-16T16:01:47+08:00">2024-01-16</time>
+                <time title="修改时间：2024-01-16 18:34:26" itemprop="dateModified" datetime="2024-01-16T18:34:26+08:00">2024-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1522,7 +1522,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-16 16:01:47" itemprop="dateModified" datetime="2024-01-16T16:01:47+08:00">2024-01-16</time>
+                <time title="修改时间：2024-01-16 18:34:26" itemprop="dateModified" datetime="2024-01-16T18:34:26+08:00">2024-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1603,7 +1603,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-16 16:01:47" itemprop="dateModified" datetime="2024-01-16T16:01:47+08:00">2024-01-16</time>
+                <time title="修改时间：2024-01-16 18:34:26" itemprop="dateModified" datetime="2024-01-16T18:34:26+08:00">2024-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
