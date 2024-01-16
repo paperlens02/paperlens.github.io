@@ -1,7 +1,7 @@
 @echo off
 
 echo commiting...
-git add . && git commit -m "一键发布" 
+git add . && git commit -m "Auto Push" 
 
 echo pushing...
 git push origin hexo
