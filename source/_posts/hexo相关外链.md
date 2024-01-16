@@ -13,3 +13,5 @@ categories:
 [hexo发布文章](https://www.cnblogs.com/anthony-wang0228/articles/11461321.html)
 
 [hexo博客同步管理及迁移](https://www.jianshu.com/p/fceaf373d797)
+
+[git host文件相关](https://raw.hellogithub.com/hosts)
