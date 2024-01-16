@@ -1,5 +1,5 @@
 @echo off
-git add . & git commit -m "一键发布"
+git add . & git commit -m "Auto Push"
 pause
 git push origin hexo
 pause
