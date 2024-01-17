@@ -20,21 +20,24 @@
     var CONFIG = {"hostname":"paperlens02.github.io","root":"/paperlens.github.io/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="方法&#x2F;函数&#x2F;库   . .    saturate Saturate is a function that clamps it’s input between 0 and 1.   normalize float normalize(float x)   vec2 normalize(vec2 x)   vec3 normalize(vec3 x)   vec4 normali">
+  <meta name="description" content="一、概述">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ShaderTips">
-<meta property="og:url" content="https://paperlens02.github.io/paperlens.github.io/2022/06/23/ShaderTips/index.html">
+<meta property="og:title" content="业务功能框架设计：MRCV">
+<meta property="og:url" content="https://paperlens02.github.io/paperlens.github.io/2024/01/16/%E4%B8%9A%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1MRCV/index.html">
 <meta property="og:site_name" content="Paper">
-<meta property="og:description" content="方法&#x2F;函数&#x2F;库   . .    saturate Saturate is a function that clamps it’s input between 0 and 1.   normalize float normalize(float x)   vec2 normalize(vec2 x)   vec3 normalize(vec3 x)   vec4 normali">
+<meta property="og:description" content="一、概述">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-06-23T06:43:15.000Z">
-<meta property="article:modified_time" content="2024-01-17T03:22:50.457Z">
+<meta property="og:image" content="https://paperlens02.github.io/paperlens.github.io/2024/01/17/%E4%B8%9A%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1MRCV/basic.png">
+<meta property="article:published_time" content="2024-01-16T10:30:00.000Z">
+<meta property="article:modified_time" content="2024-01-17T04:17:09.593Z">
 <meta property="article:author" content="paperlens">
-<meta property="article:tag" content="渲染">
-<meta property="article:tag" content="Shader">
+<meta property="article:tag" content="设计">
+<meta property="article:tag" content="UI框架">
+<meta property="article:tag" content="MRCV">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://paperlens02.github.io/paperlens.github.io/2024/01/17/%E4%B8%9A%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1MRCV/basic.png">
 
-<link rel="canonical" href="https://paperlens02.github.io/paperlens.github.io/2022/06/23/ShaderTips/">
+<link rel="canonical" href="https://paperlens02.github.io/paperlens.github.io/2024/01/16/%E4%B8%9A%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1MRCV/">
 
 
 <script id="page-configurations">
@@ -47,7 +50,7 @@
   };
 </script>
 
-  <title>ShaderTips | Paper</title>
+  <title>业务功能框架设计：MRCV | Paper</title>
   
 
 
@@ -158,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://paperlens02.github.io/paperlens.github.io/2022/06/23/ShaderTips/">
+    <link itemprop="mainEntityOfPage" href="https://paperlens02.github.io/paperlens.github.io/2024/01/16/%E4%B8%9A%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1MRCV/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/paperlens.github.io/img/head.jpg">
@@ -171,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          ShaderTips
+          业务功能框架设计：MRCV
         </h1>
 
         <div class="post-meta">
@@ -181,14 +184,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-06-23 14:43:15" itemprop="dateCreated datePublished" datetime="2022-06-23T14:43:15+08:00">2022-06-23</time>
+              <time title="创建时间：2024-01-16 18:30:00" itemprop="dateCreated datePublished" datetime="2024-01-16T18:30:00+08:00">2024-01-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-17 11:22:50" itemprop="dateModified" datetime="2024-01-17T11:22:50+08:00">2024-01-17</time>
+                <time title="修改时间：2024-01-17 12:17:09" itemprop="dateModified" datetime="2024-01-17T12:17:09+08:00">2024-01-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -197,10 +200,6 @@
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/paperlens.github.io/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/paperlens.github.io/categories/%E6%8A%80%E6%9C%AF/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
                 </span>
             </span>
 
@@ -215,42 +214,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="方法-x2F-函数-x2F-库"><a href="#方法-x2F-函数-x2F-库" class="headerlink" title="方法&#x2F;函数&#x2F;库"></a>方法&#x2F;函数&#x2F;库</h1><table>
-<thead>
-<tr>
-<th>.</th>
-<th>.</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>saturate</td>
-<td>Saturate is a function that clamps it’s input between 0 and 1.</td>
-</tr>
-<tr>
-<td>normalize</td>
-<td>float normalize(float x)  <br> vec2 normalize(vec2 x)  <br> vec3 normalize(vec3 x)  <br> vec4 normalize(vec4 x)<br> normalize() returns a vector with the same direction as its parameter, x, but with length 1.</td>
-</tr>
-<tr>
-<td>dot</td>
-<td>点乘。 <br> float dot(float x, float y)  <br> float dot(vec2 x, vec2 y)  <br> float dot(vec3 x, vec3 y)  <br> float dot(vec4 x, vec4 y)<br> dot() returns the dot product of two vectors, x and y. i.e., x[0]⋅y[0]+x[1]⋅y[1]+… If x and y are the same the square root of the dot product is equivalent to the length of the vector. The input parameters can be floating scalars or float vectors. In case of floating scalars the dot function is trivial and returns the product of x and y.</td>
-</tr>
-<tr>
-<td>pow</td>
-<td>pow(x, y) x的y次幂</td>
-</tr>
-<tr>
-<td>rcp</td>
-<td>rcp(x) &#x3D; x的倒数(1&#x2F;x) 借此来优化除法运算 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/87936887">shader低级优化</a></td>
-</tr>
-</tbody></table>
-<span id="more"></span>
+        <h1 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h1><span id="more"></span>
+<ul>
+<li>MRCV框架是针对游戏客户端业务功能开发，对显示层和数据层设计中的具体问题提出解决方案，并以简化外层工作、提升迭代速度为主目标的设计模式框架。</li>
+<li>MRCV框架作用于代码、资源、设计和所有相关工作流。</li>
+<li>MRCV依赖于设计的合理抽象。MRCV适用于任意复杂度的项目和功能。</li>
+</ul>
+<blockquote>
+<p>明确MRCV框架的目标和定义、作用域、作用条件。</p>
+<p>只有对《游戏客户端》的《业务功能》，MRCV才发挥最大的价值。业务功能包括核心玩法等深度内容。<br>《设计模式框架》：并非以底层实现和问题解决为主的Framework，而是指导开发中具体问题的解决方案的Design Method。<br>MRCV主要对显示层和数据层的设计提出指导性的解决方案。它不代理业务逻辑。<br>MRCV的唯一目标是提升迭代速度。*简化外层工作并非降低外层工作含金量，反而是对每个人提出了更高要求，要求大家共同完善框架。</p>
+<p>MRCV绝不只是代码框架，它的作用域覆盖整个游戏开发流程，它倡导职能间互相关心、紧密合作。</p>
+<p>MRCV必须依赖《设计》的合理抽象。这包括策划设计开始，到美术效果、资源落地、代码设计的全部内容。<br>MRCV并非Framework类框架，它是一个提供设计指导的轻度框架，并随项目需求逐渐成长。因此它适用于任意复杂度的项目。</p>
+</blockquote>
+<h1 id="二、简单理解"><a href="#二、简单理解" class="headerlink" title="二、简单理解"></a>二、简单理解</h1><ul>
+<li>借鉴ECS的显示层设计</li>
+<li>借鉴MVC的业务逻辑分层</li>
+<li>借鉴MVVM的视图刷新方法<br><img src="/paperlens.github.io/2024/01/17/%E4%B8%9A%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1MRCV/basic.png" alt="简洁框架图"></li>
+</ul>
+<h1 id="三、具体设计"><a href="#三、具体设计" class="headerlink" title="三、具体设计"></a>三、具体设计</h1><h2 id="ViewEntity-UI-层"><a href="#ViewEntity-UI-层" class="headerlink" title="ViewEntity(UI)层"></a>ViewEntity(UI)层</h2><ul>
+<li>轻量级，代码量应当极低。</li>
+<li>模式化，代码框架可自动生成，仅需填充必要逻辑内容。</li>
+<li>不直接存储数据。</li>
+<li>不直接执行业务逻辑。</li>
+</ul>
+<h2 id="ViewProxy层"><a href="#ViewProxy层" class="headerlink" title="ViewProxy层"></a>ViewProxy层</h2><ul>
+<li>代理显示层的特定功能需求，抽象和封装显示层的业务逻辑。</li>
+<li>为实现功能需求，存储相关的必要数据和状态。</li>
+<li>支撑资源工具链、管理资源数据，负责跨平台兼容。</li>
+<li>与UnityDOTS天生相合的性质。</li>
+</ul>
+<h2 id="ViewSystem层"><a href="#ViewSystem层" class="headerlink" title="ViewSystem层"></a>ViewSystem层</h2><ul>
+<li>统管所有(或关心的)ViewProxy。</li>
+<li>桥接数据层与显示层，实现数据响应式组件。</li>
+<li>统管视窗生命周期，负责更全局的逻辑处理。</li>
+<li>可以与框架外做统一沟通。</li>
+</ul>
 
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42115447/article/details/103934503">URPHLSL库函数</a></p>
-<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/SL-UnityShaderVariables.html">Unity Built-in shader variables</a></p>
-<h1 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Motarookie/article/details/125048328">世界空间 模型空间 观察空间 投影空间</a><br>UNITY_MATRIX_MVP  模型空间–M–&gt;世界空间–V–&gt;观察空间–P–&gt;裁剪空间</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Ling_SevoL_Y/article/details/120203081">SV_POSITION vs POSITION</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/158633488">NormalMap法线贴图</a></p>
-<h1 id="经验性方法-x2F-其他项目经验类方法"><a href="#经验性方法-x2F-其他项目经验类方法" class="headerlink" title="经验性方法&#x2F;其他项目经验类方法"></a>经验性方法&#x2F;其他项目经验类方法</h1>
     </div>
 
     
@@ -259,8 +258,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/paperlens.github.io/tags/%E6%B8%B2%E6%9F%93/" rel="tag"># 渲染</a>
-              <a href="/paperlens.github.io/tags/Shader/" rel="tag"># Shader</a>
+              <a href="/paperlens.github.io/tags/%E8%AE%BE%E8%AE%A1/" rel="tag"># 设计</a>
+              <a href="/paperlens.github.io/tags/UI%E6%A1%86%E6%9E%B6/" rel="tag"># UI框架</a>
+              <a href="/paperlens.github.io/tags/MRCV/" rel="tag"># MRCV</a>
           </div>
 
         
@@ -269,13 +269,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/paperlens.github.io/2022/06/21/%E5%9C%BA%E6%99%AF%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/" rel="prev" title="场景框架搭建">
-      <i class="fa fa-chevron-left"></i> 场景框架搭建
+    <a href="/paperlens.github.io/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/" rel="prev" title="核心玩法框架设计思路(Fishing Elite)">
+      <i class="fa fa-chevron-left"></i> 核心玩法框架设计思路(Fishing Elite)
     </a></div>
-      <div class="post-nav-item">
-    <a href="/paperlens.github.io/2022/06/24/%E5%BC%80%E5%8F%91%E8%AE%A1%E5%88%92/" rel="next" title="开发计划">
-      开发计划 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -334,7 +331,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95-x2F-%E5%87%BD%E6%95%B0-x2F-%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">方法&#x2F;函数&#x2F;库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tips"><span class="nav-number">2.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%8F%E9%AA%8C%E6%80%A7%E6%96%B9%E6%B3%95-x2F-%E5%85%B6%E4%BB%96%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">经验性方法&#x2F;其他项目经验类方法</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">一、概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">二、简单理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%85%B7%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">三、具体设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewEntity-UI-%E5%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">ViewEntity(UI)层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewProxy%E5%B1%82"><span class="nav-number">3.2.</span> <span class="nav-text">ViewProxy层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewSystem%E5%B1%82"><span class="nav-number">3.3.</span> <span class="nav-text">ViewSystem层</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
