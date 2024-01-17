@@ -9,7 +9,7 @@ categories:
 - Unity
 ---
 
-<!--more-->
+
 # 方法/函数/库
 | . | . |
 | ---- | ---- |
@@ -18,6 +18,8 @@ categories:
 | dot | 点乘。 </br> float dot(float x, float y)  </br> float dot(vec2 x, vec2 y)  </br> float dot(vec3 x, vec3 y)  </br> float dot(vec4 x, vec4 y)</br> dot() returns the dot product of two vectors, x and y. i.e., x[0]⋅y[0]+x[1]⋅y[1]+... If x and y are the same the square root of the dot product is equivalent to the length of the vector. The input parameters can be floating scalars or float vectors. In case of floating scalars the dot function is trivial and returns the product of x and y.
 | pow | pow(x, y) x的y次幂 |
 | rcp | rcp(x) = x的倒数(1/x) 借此来优化除法运算 [shader低级优化](https://zhuanlan.zhihu.com/p/87936887) |
+
+<!--more-->
 
 [URPHLSL库函数](https://blog.csdn.net/qq_42115447/article/details/103934503)
 
