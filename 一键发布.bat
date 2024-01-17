@@ -13,5 +13,11 @@ if %errorlevel% neq 0 pause && exit /b %errorlevel%
 
 echo FINISHED
 pause
-hexo clean
+echo FINISHED
+set /p confirm=
+if /i "%confirm%" neq "Y" (
+    echo FINISHED
+    pause
+    exit
+)
 pause
