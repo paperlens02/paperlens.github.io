@@ -7,8 +7,16 @@ echo pushing...
 git push origin hexo
 if %errorlevel% neq 0 pause && exit /b %errorlevel%
 
-echo hexo generating...
-hexo clean && hexo g && hexo d
+echo hexo C...
+hexo clean 
+if %errorlevel% neq 0 pause && exit /b %errorlevel%
+
+echo hexo G...
+hexo g
+if %errorlevel% neq 0 pause && exit /b %errorlevel%
+
+echo hexo D...
+hexo d
 if %errorlevel% neq 0 pause && exit /b %errorlevel%
 
 echo FINISHED
