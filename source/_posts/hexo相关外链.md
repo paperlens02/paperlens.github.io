@@ -8,6 +8,7 @@ categories:
 - 技术
 ---
 
+<!--more-->
 [菜鸟教程_Markdown](https://www.runoob.com/markdown/md-tutorial.html)
 
 [hexo发布文章](https://www.cnblogs.com/anthony-wang0228/articles/11461321.html)
@@ -20,6 +21,7 @@ categories:
 
 /node_modules/hexo-asset-image/index.js
 
+```javascript
 'use strict';
 var cheerio = require('cheerio');
 
@@ -81,3 +83,4 @@ hexo.extend.filter.register('after_post_render', function(data){
     }
   }
 });
+```
