@@ -10,11 +10,17 @@ if %errorlevel% neq 0 pause && exit /b %errorlevel%
 echo hexo Cleaning...
 hexo clean 
 
+pause
+
 echo hexo Generating...
 hexo g
 
+pause
+
 echo hexo Deploying...
 hexo d
+
+pause
 
 echo FINISHED
 pause
