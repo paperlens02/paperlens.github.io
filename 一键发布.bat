@@ -9,15 +9,12 @@ if %errorlevel% neq 0 pause && exit /b %errorlevel%
 
 echo hexo Cleaning...
 hexo clean 
-if %errorlevel% neq 0 pause && exit /b %errorlevel%
 
 echo hexo Generating...
 hexo g
-if %errorlevel% neq 0 pause && exit /b %errorlevel%
 
 echo hexo Deploying...
 hexo d
-if %errorlevel% neq 0 pause && exit /b %errorlevel%
 
 echo FINISHED
 pause
