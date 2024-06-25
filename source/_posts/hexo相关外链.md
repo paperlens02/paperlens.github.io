@@ -6,6 +6,7 @@ tags:
 - git
 categories: 
 - 技术
+- 其他
 ---
 
 [菜鸟教程_Markdown](https://www.runoob.com/markdown/md-tutorial.html)
