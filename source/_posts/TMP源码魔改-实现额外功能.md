@@ -10,6 +10,9 @@ categories:
 - Unity
 ---
 
+本文对TMP的中文换行逻辑、字体材质复用、资源工具流进行优化。
+<!--more-->
+
 [魔改后的TMP源码(private)](https://github.com/paperlens02/customTMP)
 
 # 魔改默认创建的TMP组件
@@ -19,7 +22,6 @@ categories:
 # 汉字错误换行问题
 编写TMP的老外似乎不是很理解汉字相关的语言逻辑，TMP的换行逻辑虽然对汉字做了特殊优化，但结果仍有错误。例如"啊abc"会被认为是一个整词，会按照英文习惯放在一起换行。此改动解决这种错误换行问题。
 
-<!--more-->
 
 **0.以下所有改动均在TMPro_UGUI_Private.cs的GenerateTextMesh()方法中进行。**
 
