@@ -73,8 +73,7 @@ AI的表现可以被自动或人为的评估，从而修正自身的运行方式
 
 # 三、AI执行流程举例
 1. 游戏开始, AI通过<font color=green>"观察器"</font>得知场景情况和自身的装备情况。这时<font color=orange>"观察方法"</font>会影响AI的认知程度。
-2. 经过<font color=green>"记忆检索器"</font>和<font color=green>"计划器"</font>，AI依据<font color=orange>"检索方法"</font>、<font color=orange>"计划方法"</font>，制定了一一个钓鱼计划：如尽可能钓起最大的
-鱼。
+2. 经过<font color=green>"记忆检索器"</font>和<font color=green>"计划器"</font>，AI依据<font color=orange>"检索方法"</font>、<font color=orange>"计划方法"</font>，制定了一一个钓鱼计划：如尽可能钓起最大的鱼。
 3. AI依据<font color=blue>"计划"</font>，形成了一个<font color=blue>"预期"</font>：要钓起大鱼。并拆解了预期：要能找到大鱼、能吸引到大鱼、能让大鱼上钩。
 4. AI通过<font color=green>"行动器"</font>进行了第一一个<font color=blue>"行动"</font>: 寻找大鱼。AI执行了来回移动视角、或者使用无人机道具之类的<font color=blue>"操作"</font>。
 5. 如果AI经过这些<font color=blue>"操作"</font>，依然没有找到心仪的大鱼，<font color=green>"复盘器"</font>会生成一个消极的<font color=blue>"复盘结果"</font>。
