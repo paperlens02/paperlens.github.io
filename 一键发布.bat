@@ -8,7 +8,7 @@ git push origin hexo
 if %errorlevel% neq 0 (
     echo git push failed.
     pause
-    exit /b %errorlevel%
+    goto :end
 )
 
 echo hexo Cleaning...
@@ -16,7 +16,7 @@ hexo clean
 if %errorlevel% neq 0 (
     echo hexo clean failed.
     pause
-    exit /b %errorlevel%
+    goto :end
 )
 
 echo hexo Generating...
@@ -24,7 +24,7 @@ hexo g
 if %errorlevel% neq 0 (
     echo hexo generate failed.
     pause
-    exit /b %errorlevel%
+    goto :end
 )
 
 echo hexo Deploying...
@@ -32,7 +32,7 @@ hexo d
 if %errorlevel% neq 0 (
     echo hexo deploy failed.
     pause
-    exit /b %errorlevel%
+    goto :end
 )
 
 echo FINISHED
@@ -44,4 +44,6 @@ if /i "%confirm%" neq "Y" (
     pause
     exit
 )
+
+:end
 pause
