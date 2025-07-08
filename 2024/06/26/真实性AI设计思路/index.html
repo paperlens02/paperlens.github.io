@@ -27,13 +27,13 @@
 <meta property="og:site_name" content="Paper">
 <meta property="og:description" content="一、设计目标 真实性: AI的整体行为更真实,包括对场景的认知、具体的操作等。 AI的行动更具有计划性、并能根据场况、对决情况、单局内曾发生过的结果制定策略。   工具化: AI的性格和智能度能更简单的被观测、配置和编辑。 热更新: AI的行为与数据分离，更好的支持热更和Lua编码，更好的支持编辑器控制。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://paperlens02.com/2024/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/1.png">
+<meta property="og:image" content="https://paperlens02.com/2024/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/1.png">
 <meta property="article:published_time" content="2024-06-26T06:46:32.000Z">
-<meta property="article:modified_time" content="2025-07-08T02:38:15.544Z">
+<meta property="article:modified_time" content="2025-07-08T03:01:26.195Z">
 <meta property="article:author" content="paperlens">
 <meta property="article:tag" content="设计">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://paperlens02.com/2024/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/1.png">
+<meta name="twitter:image" content="https://paperlens02.com/2024/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/1.png">
 
 <link rel="canonical" href="https://paperlens02.com/2024/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/">
 
@@ -189,7 +189,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-07-08 10:38:15" itemprop="dateModified" datetime="2025-07-08T10:38:15+08:00">2025-07-08</time>
+                <time title="修改时间：2025-07-08 11:01:26" itemprop="dateModified" datetime="2025-07-08T11:01:26+08:00">2025-07-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -226,7 +226,7 @@
 <li>热更新: AI的行为与数据分离，更好的支持热更和Lua编码，更好的支持编辑器控制。</li>
 </ul>
 <span id="more"></span>
-<h1 id="二、具体设计"><a href="#二、具体设计" class="headerlink" title="二、具体设计"></a>二、具体设计</h1><p><img src="/2024/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/1.png" alt="真实性AI框架"></p>
+<h1 id="二、具体设计"><a href="#二、具体设计" class="headerlink" title="二、具体设计"></a>二、具体设计</h1><p><img src="/2024/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/1.png" alt="真实性AI框架"></p>
 <h2 id="观察模块"><a href="#观察模块" class="headerlink" title="观察模块"></a>观察模块</h2><p>AI会通过某种可配置的方式观察游戏世界。</p>
 <ul>
 <li>观察器(Observer): 从游戏世界(World)、 复盘结果(Review)中观察自己想要的信息，并存储在记忆(Memory)中。</li>
