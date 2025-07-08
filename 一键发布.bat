@@ -1,4 +1,3 @@
-@echo off
 
 echo commiting...
 git add . && git commit -m "Auto Push" 
