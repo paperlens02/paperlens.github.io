@@ -1,42 +1,42 @@
 
-echo commiting...
+echo commiting... >> error.log
 git add . && git commit -m "Auto Push" 
 
-echo pushing...
+echo pushing... >> error.log
 git push origin hexo
 if %errorlevel% neq 0 (
-    echo git push failed.
+    echo git push failed. >> error.log
     goto :end
 )
 
-echo hexo Cleaning...
+echo hexo Cleaning... >> error.log
 hexo clean 
 if %errorlevel% neq 0 (
-    echo hexo clean failed.
+    echo hexo clean failed. >> error.log
     goto :end
 )
 
-echo hexo Generating...
+echo hexo Generating... >> error.log
 hexo g
 if %errorlevel% neq 0 (
-    echo hexo generate failed.
+    echo hexo generate failed. >> error.log
     goto :end
 )
 
-echo hexo Deploying...
+echo hexo Deploying... >> error.log
 hexo d
 if %errorlevel% neq 0 (
-    echo hexo deploy failed.
+    echo hexo deploy failed. >> error.log
     goto :end
 )
 
 :end
-echo FINISHED
+echo FINISHED >> error.log
 pause
-echo FINISHED
+echo FINISHED >> error.log
 set /p confirm=
 if /i "%confirm%" neq "Y" (
-    echo FINISHED
+    echo FINISHED >> error.log
 )
 
 pause
