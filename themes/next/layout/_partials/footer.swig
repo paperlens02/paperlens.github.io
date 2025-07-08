@@ -18,6 +18,9 @@
     <i class="{{ theme.footer.icon.name }}"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">{{ theme.footer.copyright or author }}</span>
+  <span class="with-love">
+    <i class="{{ theme.footer.icon.name }}"></i>
+  </span>
 
   {%- if config.symbols_count_time.total_symbols %}
     <span class="post-meta-divider">|</span>

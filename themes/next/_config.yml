@@ -579,6 +579,23 @@ comments:
     #gitalk:
     #  order: -2
 
+# Giscus 评论系统
+giscus:
+  enable: true
+  repo: paperlens02/paperlens.github.io  # 你的 GitHub 仓库
+  repo_id: R_kgDOHQfNYQ                  # 仓库 ID
+  category: General                      # 分类名称
+  category_id: DIC_kwDOHQfNYc4Csn9v      # 分类 ID
+  mapping: pathname                      # 映射方式（pathname / url / title）
+  strict: "0"                            # 是否严格匹配
+  reactions_enabled: "1"                 # 是否启用表情反应
+  emit_metadata: "0"                     # 是否发送元数据
+  input_position: "bottom"               # 输入框位置（top/bottom）
+  theme: "dark"                          # 主题风格（light/dark/dark_dimmed）
+  lang: "zh-CN"                          # 语言
+  crossorigin: "anonymous"               # CORS 设置
+  async: true                            # 异步加载
+
 # Disqus
 disqus:
   enable: false
