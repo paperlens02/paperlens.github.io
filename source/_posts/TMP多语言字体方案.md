@@ -24,14 +24,14 @@ ttf文件提供给客户端程序，程序将ttf文件转换为项目中用的SD
 #### 1）字体分类
 在多语言项目中，我们使用TMP的fallbackList机制来配置字图查找的优先级：
 
-![enter image description here](2022/06/21/TMP多语言字体方案/fallbackList.png)
+![enter image description here](fallbackList.png)
 
 我们现在会把项目中可能使用的所有字体分为：各语言字体（中日英韩德法..）、符号字体（仅存在一个）和特殊字体。
 在这个前提下，我们希望各个字库间尽可能无重复（防止不同语言下看同一个字的样式不同），所以我们需要将源ttf文件进行子集筛选，让它仅存在对应语言的字，或仅存在符号字。
 #### 2）生成字库
 根据对应语言的UTF-8编码段，仅筛选出需要的字符，生成子集ttf文件；在Window/TextMeshPro/FontAssetCreator工具中，使用对应ttf文件生成合适大小的字图；最终保存为asset文件。
 
-![enter image description here](2022/06/21/TMP多语言字体方案/fontSetting.png)
+![enter image description here](fontSetting.png)
 
 |可能需要关注的配置内容：|
 | ---- | ---- |
@@ -58,25 +58,25 @@ ttf文件提供给客户端程序，程序将ttf文件转换为项目中用的SD
 加粗、斜体等直接在TMP组件中勾选即可；描边等复杂效果实现如下。
 首先选中对应字体的材质球(保存在Resources/UI/Font目录下)：
 
-![enter image description here](2022/06/21/TMP多语言字体方案/mat1.png)
+![enter image description here](mat1.png)
 
 为材质球创建新的预设：
 
-![enter image description here](2022/06/21/TMP多语言字体方案/mat2.png)
+![enter image description here](mat2.png)
 
 为新的材质预设命名，**本项目中命名必须以“TMPCommonMat”开头**：
 
-![enter image description here](2022/06/21/TMP多语言字体方案/mat3.png)
+![enter image description here](mat3.png)
 
 在inspector中可以编辑具体材质内容：
 
-![enter image description here](2022/06/21/TMP多语言字体方案/mat4.png)
+![enter image description here](mat4.png)
 
 在TMP组件中选择对应预设即可：
 
-![enter image description here](2022/06/21/TMP多语言字体方案/mat5.png)
+![enter image description here](mat5.png)
 
-![enter image description here](2022/06/21/TMP多语言字体方案/mat6.png)
+![enter image description here](mat6.png)
 
 # 图文混排
 
@@ -91,7 +91,7 @@ ttf文件提供给客户端程序，程序将ttf文件转换为项目中用的SD
 
 配置文本为"测试字体<sprite="图集名" name="图片名">测试字体"，即可看到图文混排结果。
 例：aaaa<sprite="Summon_tp1" name="Btn_Main_ZhaoHuan">bbbb
-![enter image description here](2022/06/21/TMP多语言字体方案/sprite.png)
+![enter image description here](sprite.png)
 
 #缺字和字体错误等问题的修复
 缺字时，由程序向对应字体文件(ttf)中新增字形，再重新生成asset即可；更方便的做法是专门创建一个用于补字的兜底字库，将它放在fallbackList的最后，其对应ttf字体包含几乎所有字形，其CharacterSequence仅按需添加。
