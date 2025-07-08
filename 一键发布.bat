@@ -42,7 +42,7 @@ set /p confirm=
 if /i "%confirm%" neq "Y" (
     echo FINISHED
     pause
-    exit
+    goto :end
 )
 
 :end
