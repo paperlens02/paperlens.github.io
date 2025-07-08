@@ -566,7 +566,7 @@ comments:
   style: tabs
   # Choose a comment system to be displayed by default.
   # Available values: changyan | disqus | disqusjs | gitalk | livere | valine
-  active:
+  active: giscus
   # Setting `true` means remembering the comment system selected by the visitor.
   storage: true
   # Lazyload all comment systems.
@@ -591,7 +591,7 @@ giscus:
   reactions_enabled: "1"                 # 是否启用表情反应
   emit_metadata: "0"                     # 是否发送元数据
   input_position: "bottom"               # 输入框位置（top/bottom）
-  theme: "dark"                          # 主题风格（light/dark/dark_dimmed）
+  theme: "noborder_gray"                 # 主题风格（light/dark/dark_dimmed）
   lang: "zh-CN"                          # 语言
   crossorigin: "anonymous"               # CORS 设置
   async: true                            # 异步加载
