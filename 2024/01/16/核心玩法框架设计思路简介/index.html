@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"paperlens02.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="核心玩法框架是基于“属性、行为、条件”三大设计元，融合帧同步的联机实时同步思路、状态同步的业务逻辑维护思路、ECS的属性管理和快照思路，以支持快速迭代、支持可视化编辑工具和弱编码工具为主要特点的联机实时对决框架。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="核心玩法框架设计思路(Fishing Elite)">
+<meta property="og:url" content="https://paperlens02.com/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/index.html">
+<meta property="og:site_name" content="Paper">
+<meta property="og:description" content="核心玩法框架是基于“属性、行为、条件”三大设计元，融合帧同步的联机实时同步思路、状态同步的业务逻辑维护思路、ECS的属性管理和快照思路，以支持快速迭代、支持可视化编辑工具和弱编码工具为主要特点的联机实时对决框架。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://paperlens02.com/relate.png">
+<meta property="og:image" content="https://paperlens02.com/basic.png">
+<meta property="og:image" content="https://paperlens02.com/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1.png">
+<meta property="og:image" content="https://paperlens02.com/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E8%81%94%E6%9C%BA.png">
+<meta property="og:image" content="https://paperlens02.com/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E9%98%B2%E4%BD%9C%E5%BC%8A.png">
+<meta property="og:image" content="https://paperlens02.com/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E9%80%9A%E8%AE%AF.png">
+<meta property="og:image" content="https://paperlens02.com/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E5%B1%9E%E6%80%A7.png">
+<meta property="article:published_time" content="2024-01-16T10:30:00.000Z">
+<meta property="article:modified_time" content="2025-09-14T05:21:03.200Z">
+<meta property="article:author" content="paperlens">
+<meta property="article:tag" content="设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://paperlens02.com/relate.png">
+
+<link rel="canonical" href="https://paperlens02.com/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>核心玩法框架设计思路(Fishing Elite) | Paper</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Paper</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">也就是说</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://paperlens02.com/2024/01/16/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E7%AE%80%E4%BB%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/img/head.jpg">
+      <meta itemprop="name" content="paperlens">
+      <meta itemprop="description" content="一个一个一个一个一个一个一个">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          核心玩法框架设计思路(Fishing Elite)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-01-16 18:30:00" itemprop="dateCreated datePublished" datetime="2024-01-16T18:30:00+08:00">2024-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-14 13:21:03" itemprop="dateModified" datetime="2025-09-14T13:21:03+08:00">2025-09-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">设计</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>核心玩法框架是基于“属性、行为、条件”三大设计元，融合帧同步的联机实时同步思路、状态同步的业务逻辑维护思路、ECS的属性管理和快照思路，以支持快速迭代、支持可视化编辑工具和弱编码工具为主要特点的联机实时对决框架。</p>
+<span id="more"></span>
+<h1 id="一、核心玩法框架内容简介"><a href="#一、核心玩法框架内容简介" class="headerlink" title="一、核心玩法框架内容简介"></a>一、核心玩法框架内容简介</h1><h2 id="1-1-项目现状"><a href="#1-1-项目现状" class="headerlink" title="1.1 项目现状"></a>1.1 项目现状</h2><ul>
+<li>较为紧张的开发时间、高频的迭代需求</li>
+<li>高创新需求：需求难以具体描述、且常常需要反复尝试和调整</li>
+<li>高度基于物理、拟真、随机性的游戏演算过程</li>
+<li>分布式无状态的服务器基础框架、低服务器开发支持</li>
+<li>中重度的拟真玩法和在线对决</li>
+</ul>
+<h2 id="1-2-项目需求"><a href="#1-2-项目需求" class="headerlink" title="1.2 项目需求"></a>1.2 项目需求</h2><ul>
+<li>一定程度的工具化，提升迭代速度</li>
+<li>工具化需要更好的支持创新</li>
+<li>更好的拟真性封装实现</li>
+<li>基于客户端的核心玩法演算</li>
+<li>完整的实时对决机制</li>
+</ul>
+<h2 id="1-3-框架功能"><a href="#1-3-框架功能" class="headerlink" title="1.3 框架功能"></a>1.3 框架功能</h2><ul>
+<li>一套面向策划的可视化脚本工具<ul>
+<li>特点：低理解成本、高灵活性、易于操作</li>
+<li>功能：快速简便的尝试和实现新的设计想法，进而有效提高产品的迭代速度</li>
+</ul>
+</li>
+<li>纯客户端的核心玩法业务<ul>
+<li>特点：由客户端维护状态、计算数值；服务器仅协助处理核心玩法中的重要事件或数据（如回合结算、关卡刷新）</li>
+<li>功能：实现全部的核心玩法功能</li>
+</ul>
+</li>
+<li>一整套联网实时对决方案<ul>
+<li>特点：实现联机客户端间的<font color="orange">近似同步</font>，对服务器仅依赖消息转发</li>
+<li>功能：实时联机同步、断线重连、录像回放、防作弊、……</li>
+</ul>
+</li>
+</ul>
+<h1 id="二、游戏业务框架设计思路"><a href="#二、游戏业务框架设计思路" class="headerlink" title="二、游戏业务框架设计思路"></a>二、游戏业务框架设计思路</h1><blockquote>
+<p>从需求出发？——如何整理框架设计思路<br><font color="red"><em>“你这个框架，主要解决了什么问题？”</em></font>  </p>
+</blockquote>
+<h2 id="2-1-思维方式1：从需求逐步抽象成定义"><a href="#2-1-思维方式1：从需求逐步抽象成定义" class="headerlink" title="2.1 思维方式1：从需求逐步抽象成定义"></a>2.1 思维方式1：从需求逐步抽象成定义</h2><p><strong>需求分层：以某个用户想装修一栋房子用于居住为例</strong>  </p>
+<ul>
+<li>用户想要书房有舒缓的灯光和放书的柜子，想要在游戏房有R.G.B.和手办柜，……（具象的、细节的）  </li>
+<li>用户想要在不同房间有风格各异的装潢。（笼统总结，带有方向指引的）  </li>
+<li>用户想要丰富的居住体验，最大化发挥各个房间的不同价值。（Lv.1：具体总结、指引设计方向）  </li>
+<li>用xxx的预算，完成一个能够支持每个房间采用不同解决方案，满足不同居住需求的总装修设计，并实际落地。（Lv.2：带有限定词的总结和方向指引——<em>用户去哪了？</em>其实限定词就描述了用户，而描述用户常常是需求总结中最容易忽视的一点——此时可以让其它描述也<font color="orange">剥离用户视角</font>：用户想要什么→我要干什么）  </li>
+<li>本装修设计思路是以多样性和实用性为主目标，对不同预算提出合适的解决方案，为满足用户具体需求提出实际解决方案的一种工程指导。（Lv3：对工作目标和结果的定义）</li>
+</ul>
+<p><strong>需求分层：以UI框架为例</strong>  </p>
+<ul>
+<li>我们需要解决UI上常见的异步时序&#x2F;资源管理&#x2F;状态代码冗余等等问题，支持UI动画&#x2F;界面分层等等功能。（具象的、细节的）  </li>
+<li>我们需要简化UI功能的代码编写、统一UI功能上下文规范、简化工作流。（Lv.1：具体总结、指引设计方向）  </li>
+<li>为中轻度游戏项目量身定制一套最大程度降低成本、提升效率的UI框架。（Lv.2：带有限定词的总结和方向指引）  </li>
+<li>MRCV框架是针对游戏客户端业务功能开发，对显示层和数据层设计中的具体问题提出解决方案，并以简化外层工作、提升迭代速度为主目标的设计模式框架。MRCV框架作用于代码、资源、设计和所有相关工作流。MRCV依赖于设计的合理抽象。MRCV适用于任意复杂度的项目和功能。（Lv3：框架的目标和定义、作用域、作用条件。）（MRCV框架设计介绍.pptx ）</li>
+</ul>
+<p><strong>总结</strong></p>
+<p>框架设计需要先结合需求、现状、资源等等，综合的形成整体“印象”，然后抽象出最接近这一”印象”的一个“定义”，再最终找出能符合”定义”的一个”设计”。  </p>
+<blockquote>
+<p>思考：<font color="red"><em>“状态机与行为树，哪个更好？” “MVC和ECS，哪个更适合UI框架？”</em></font><br>设计的逻辑闭环：细节的用户需求 → 对用户和需求的笼统印象 → 对设计本身的定义 → 是否能实现每个细节用户需求，是否能满足用户体验，发挥用户价值 → 随着用户发挥价值，产生新的需求。</p>
+</blockquote>
+<p><img src="/relate.png" alt="（顺时针）基于设计形成的逻辑闭环，用户与设计间是螺旋上升的关系"></p>
+<blockquote>
+<p>思考：这种思维方式，只能指导我们如何从需求出发完成一个框架设计。但我们又如何从框架设计反推用户的使用方式，推进用户发挥新的价值？</p>
+</blockquote>
+<h2 id="2-2-思维方式2：统合框架用户与设计者间的主要矛盾"><a href="#2-2-思维方式2：统合框架用户与设计者间的主要矛盾" class="headerlink" title="2.2 思维方式2：统合框架用户与设计者间的主要矛盾"></a>2.2 思维方式2：统合框架用户与设计者间的主要矛盾</h2><blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/566176637">康德—先天综合判断</a></p>
+</blockquote>
+<p><strong>从用户需求到设计理论的矛盾</strong><br>囿于程序框架设计的表现形式，程序框架设计总结必须是基于先天判断（理论驱动）的，即独立于经验和感官印象，具备普遍性、必然性的；而用户需求常常是基于后天判断（用户驱动）的，即基于感官印象或实践经验，不具备必然性的。我们首先需要通过理论抽象和普适原则的归纳，将来自感官印象和实践经验的后天判断提炼为不受个别案例限制的先天判断，确立其在程序框架设计中的普遍适用性和必然有效性。  </p>
+<p><strong>从框架设计到框架使用的矛盾</strong><br>囿于程序框架设计的功能效用，程序框架设计总结必须是基于综合判断（创造性的）的，即附加性质的、扩充性质的、基于经验认知的；而框架使用者常常需要基于分析判断（解释性的）的结论，即说明性的、必然性的、理论可靠的。我们必须通过精确的逻辑演绎和对细节的严密审查，将基于经验和创造性的综合判断精炼为清晰、明确并具有可验证性的分析判断，以便框架使用者能够理解和信赖这些结论在实际应用中的真实有效性。  </p>
+<p><strong>总结</strong><br>可以看到：框架设计者与他的主要客户（面向的客户、框架使用者）是存在根本矛盾的。因此，<font color="orange"><strong>框架设计要服务用户，就必须要先剥离用户</strong></font>。  </p>
+<blockquote>
+<p>思考：如何统合不同思维方式间的矛盾？<br>可能的答案：从更高抽象层面寻找共性，或有限辩证式的寻找解决方案；批判性的沟通和互相学习；合理妥协，求同（目标）存异（细节）；螺旋式的探索和实践（但要注意成本）  </p>
+</blockquote>
+<h1 id="三、核心玩法框架-设计思路"><a href="#三、核心玩法框架-设计思路" class="headerlink" title="三、核心玩法框架 - 设计思路"></a>三、核心玩法框架 - 设计思路</h1><h2 id="3-1-核心玩法的“印象”"><a href="#3-1-核心玩法的“印象”" class="headerlink" title="3.1 核心玩法的“印象”"></a>3.1 核心玩法的“印象”</h2><p>见上文 1.1 项目现状 和 1.2 项目需求</p>
+<h2 id="3-2-核心玩法的“定义”"><a href="#3-2-核心玩法的“定义”" class="headerlink" title="3.2 核心玩法的“定义”"></a>3.2 核心玩法的“定义”</h2><p>核心玩法框架针对基于大量复杂演算的玩法，为其实时在线同步和过程回放，提供工程实践上的解决方案；<br>它还作用于程序代码编写和策划设计实现相关工作流，以提高配置迭代速度、增加配置灵活性为主目标；<br>核心玩法框架定制给希望成本更低、不严格要求精度和品质、需要更快速迭代、更灵活创新的场景。  </p>
+<h1 id="四、核心玩法框架-设计要素"><a href="#四、核心玩法框架-设计要素" class="headerlink" title="四、核心玩法框架 - 设计要素"></a>四、核心玩法框架 - 设计要素</h1><h2 id="4-1-实时在线对决"><a href="#4-1-实时在线对决" class="headerlink" title="4.1 实时在线对决"></a>4.1 实时在线对决</h2><h3 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h3><p>要实现在线同步，至少需要实现哪些功能？  </p>
+<ul>
+<li>快照<ul>
+<li>游戏可被序列化和反序列化</li>
+</ul>
+</li>
+<li>回放<ul>
+<li>游戏逻辑执行是稳定可再现的<br>要实现更好的在线同步，需要实现哪些功能？</li>
+</ul>
+</li>
+<li>帧一致性<ul>
+<li>依据各端间约定好的步长(step)，保证各端在每一帧执行时，都已经准备好了所有所需内容。</li>
+<li>全端等待？延迟端亏损？亏损补偿？</li>
+</ul>
+</li>
+<li>矫正<ul>
+<li>游戏内的所有属性可被随时修改到另一个值，并不影响业务逻辑</li>
+</ul>
+</li>
+<li>预测（快进）<ul>
+<li>游戏运行不依赖未知内容</li>
+</ul>
+</li>
+<li>……</li>
+</ul>
+<h3 id="帧同步是如何实现复杂玩法的在线同步的？（常见于MOBA）（马里奥建造2）"><a href="#帧同步是如何实现复杂玩法的在线同步的？（常见于MOBA）（马里奥建造2）" class="headerlink" title="帧同步是如何实现复杂玩法的在线同步的？（常见于MOBA）（马里奥建造2）"></a><font color="orange">帧同步</font>是如何实现复杂玩法的在线同步的？（常见于MOBA）（马里奥建造2）</h3><p>这类游戏约定游戏帧率（步长），在每一步中收集所有玩家的操作，并下发；各个客户端都依据这同一操作进行游戏，通过内部业务逻辑设计保证输入相同时，输出一定一致。<br>可总结：将游戏逻辑视为一个保证输入输出的黑盒子，将玩家输入视为唯一输入入口；操作和游戏业务逻辑解耦了。</p>
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/130702310">细谈网络同步在游戏历史中的发展变化（上）</a>，<a target="_blank" rel="noopener" href="https://blog.codingnow.com/2018/08/lockstep.html">云风的 BLOG: lockstep 网络游戏同步方案</a><br>参考：经典帧同步网络卡顿现象：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1364y1r75u/?spm_id_from=333.337.search-card.all.click&vd_source=ebc79fa61f020384936bb76b7b517049">马造2的卡比能多恶心？马里奥制造2</a>  </p>
+</blockquote>
+<p><strong>为什么我们不适用帧同步</strong>  </p>
+<ul>
+<li>帧同步的开发和维护成本极高。  </li>
+<li>帧同步对网络稳定性的要求高。</li>
+</ul>
+<h3 id="状态同步是如何实现复杂玩法的在线同步的？（常见于MMORPG）"><a href="#状态同步是如何实现复杂玩法的在线同步的？（常见于MMORPG）" class="headerlink" title="状态同步是如何实现复杂玩法的在线同步的？（常见于MMORPG）"></a><font color="orange">状态同步</font>是如何实现复杂玩法的在线同步的？（常见于MMORPG）</h3><p>这类游戏的主要游戏计算都被放在服务端，即客户端仅负责输入，服务端负责了业务逻辑和具体的输出。通过这种方式，所有客户端都必定能收到完全一致的、经过服务器验证的状态。<br>但这种同步常常容易出现：较差的打击感和反馈感（延迟）、高服务器负载、……。  </p>
+<blockquote>
+<p>参考：细谈网络同步在游戏历史中的发展变化（中）</p>
+</blockquote>
+<p><strong>延伸：基于状态的设计模式</strong></p>
+<p>以状态机为例：复杂的状态切换维护、上下文与状态的耦合问题、状态间的上下文依赖问题等，均成为状态机难以维护的理由——不能很好的支持开闭原则。<br>从领域驱动设计的角度分析：状态仅仅是区分业务逻辑领域的一个标志位，状态模式作为一种行为型设计模式，其主要目标是分离行为模块，而非管理和维护状态。  </p>
+<blockquote>
+<p>思考：状态是不是一种属性？由属性驱动逻辑是否算是一种数据驱动？<br>参考：领域驱动设计：参考书《领域驱动设计 软件核心复杂性应对之道》<br>参考：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/DK3YM3umDfuEIvX77DHdHA?scene=25#wechat_redirect">从4万行代码降到1.8万，腾讯视频竟然用DDD做架构重构？</a><br>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/641295531">一文读懂：领域驱动设计DDD</a>  </p>
+</blockquote>
+<p><strong>为什么我们不适用状态同步</strong></p>
+<ul>
+<li>状态同步对服务器开发要求高。  </li>
+<li>状态同步无法较好的还原游戏细节。</li>
+</ul>
+<h3 id="ECS是如何实现复杂玩法的在线同步的？（守望先锋、喷射战士）"><a href="#ECS是如何实现复杂玩法的在线同步的？（守望先锋、喷射战士）" class="headerlink" title="ECS是如何实现复杂玩法的在线同步的？（守望先锋、喷射战士）"></a><font color="orange">ECS</font>是如何实现复杂玩法的在线同步的？（守望先锋、喷射战士）</h3><p>E+C：将业务逻辑模块分割成了最小逻辑元或数据元(C)，而每个实体(E)由多个C组合而成，游戏由所有实体组合而成。因此，只要C是可序列化和反序列化的，整个游戏就是可以快照的。<br>S：系统模块(S)将细碎散乱的C合理的管理起来，并依照规划好的策略刷新它们。因此，只要S中的逻辑策略是稳定可再现的，整个游戏就是可以回放的。<br>可总结：数据与逻辑的解耦（状态和行为的解耦）    </p>
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.codingnow.com/2017/06/overwatch_ecs.html">云风的 BLOG: 浅谈《守望先锋》中的 ECS 构架</a><br>参考：经典ECS卡顿现象：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16d4y1q7yL/?vd_source=ebc79fa61f020384936bb76b7b517049">【Splatoon 3】自产搞笑合集</a>（1:05~1:32间）</p>
+</blockquote>
+<p><strong>延伸：什么叫属性与逻辑解耦？</strong>  </p>
+<p>if (a &gt; 10) b &#x3D; 3; 这行代码意味着属性a与属性b有耦合。<br>if (a &gt; 10) BLogic(); 这行代码意味着属性a与逻辑b有耦合。  </p>
+<blockquote>
+<p>思考：可否定义”逻辑单元”为”一批属性的耦合集”？  </p>
+</blockquote>
+<p><strong>延伸：分层框架与平铺框架</strong> </p>
+<p>UI框架有很强的分层需求（MRCV框架复盘.pptx ）<br>数据驱动的框架常常是平铺框架  </p>
+<blockquote>
+<p>思考：在MRCV框架中是如何处理分层UI元素与平铺式Proxy之间的矛盾的？有什么更好的解决方案？<br>思考：为什么说数据驱动的框架常常是平铺式框架？数据层的设计会用哪些技巧来更好的平铺？  </p>
+</blockquote>
+<p><strong>为什么我们不适用ECS</strong></p>
+<ul>
+<li>我们并没有大量同质化实体(E)</li>
+<li>我们并没有大量可复用逻辑或数据(C)</li>
+<li>我们的业务逻辑并没有复杂到需要有专门的系统来进行管理(S)</li>
+</ul>
+<h3 id="总结：我们的工作重点在哪里？能借鉴哪些思路？"><a href="#总结：我们的工作重点在哪里？能借鉴哪些思路？" class="headerlink" title="总结：我们的工作重点在哪里？能借鉴哪些思路？"></a>总结：我们的工作重点在哪里？能借鉴哪些思路？</h3><ul>
+<li>低开发和维护成本 → 使用状态同步而非帧同步</li>
+<li>分模块的分工效率 → 使用按领域划分的平铺模式</li>
+<li>低服务器开发成本 → 不能让服务器负责状态同步计算</li>
+<li>高迭代效率、高debug支持、高度工具化 → 借鉴组件模式，高度实现热插拔</li>
+<li>较好（而非完美）的还原游戏细节 → 属性同步机制</li>
+<li>完美的还原游戏重要节点 → 行为(状态)同步机制</li>
+<li>低网络要求 → 较好的回放、快照、预测、回滚、矫正机制</li>
+</ul>
+<h2 id="4-2-工具化"><a href="#4-2-工具化" class="headerlink" title="4.2 工具化"></a>4.2 工具化</h2><p>（编辑中）（工业化与工具.pptx ）  </p>
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/631538138">低代码逻辑编排观：PlayMaker</a>  </p>
+<blockquote>
+<p>艺术家出身的开发者创作会更喜欢 Playmaker，Playmaker 是一种发散型思维，散乱的做，做到哪里想到哪里，随心所欲，发现 Bug 再去纠正；这在前期的创作中非常重要，我没有去花大的精力考虑那些需要注重的程序先后关系，而把精力完全花在了创意上面。</p>
+</blockquote>
+</blockquote>
+<h1 id="五、核心玩法框架-设计简介"><a href="#五、核心玩法框架-设计简介" class="headerlink" title="五、核心玩法框架 - 设计简介"></a>五、核心玩法框架 - 设计简介</h1><h2 id="5-1-设计元"><a href="#5-1-设计元" class="headerlink" title="5.1 设计元"></a>5.1 设计元</h2><p>设计元是框架的基本组成<font color="orange"><em><strong>原子</strong></em></font>。</p>
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><p>整个游戏都是由属性(或称数据)组成的。属性是可序列化和反序列化的。属性可以驱动行为的产生。<br>属性的设计为类似帧同步的实时同步机制、回放机制提供了土壤。 </p>
+<h3 id="行为"><a href="#行为" class="headerlink" title="行为"></a>行为</h3><p>行为是一种数据。行为是业务逻辑启动的钥匙。行为数据的生命可能是瞬间的，也可能是有限持续性的。<br>行为的设计为类似状态同步的实时同步机制、回放机制提供了土壤。  </p>
+<h3 id="业务逻辑单元"><a href="#业务逻辑单元" class="headerlink" title="业务逻辑单元"></a>业务逻辑单元</h3><p>业务逻辑单元是一段自解释的逻辑，它是属性的修改器，它描述了属性间的耦合关系。<br>业务逻辑单元的设计反映了领域边界的制定，为平铺式设计和热插拔提供了土壤。  </p>
+<h3 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h3><p>条件是行为的触发器。条件由最简洁的业务逻辑单元构成，条件和行为共同组成属性和逻辑的解耦器。<br>条件虽然包含逻辑，但在这里也被视为一种数据。  </p>
+<h3 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h3><p>实体是一系列数据和业务逻辑单元的聚合。<br>实体的设计为热插拔提供了土壤，并更好的梳理框架分层。  </p>
+<h3 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h3><p>数据是一系列静态属性的聚合。<br>数据层的设计为工具化提供了土壤。  </p>
+<p><img src="/basic.png" alt="组成核心玩法框架的设计元"></p>
+<h2 id="5-2-设计原则"><a href="#5-2-设计原则" class="headerlink" title="5.2 设计原则"></a>5.2 设计原则</h2><p>设计原则是指导设计元如何有机结合的<font color="orange"><em><strong>键</strong></em></font></p>
+<h3 id="组件化、平铺式"><a href="#组件化、平铺式" class="headerlink" title="组件化、平铺式"></a>组件化、平铺式</h3><p>我们的核心玩法阶段繁多、而功能模块间耦合偏少。组件化、平铺式的设计最大的特点是碎片化；而碎片化的设计虽然不利于处理复杂耦合关系，但利于业务逻辑维护和迭代效率，是很适合我们核心玩法的。<br>业务领域自解释<br>如何划分每个设计碎片？我们从领域驱动设计的思路出发，并额外添加一项要求：每一个碎片必须能自解释，即自驱动运行(狭义)、无(轻)依赖、无(松)耦合。这样不仅支持了每个业务领域的热插拔、还省去了管理器等复杂设计模块。<br>属性分层<br>动态属性&#x2F;静态属性；临时属性&#x2F;存档属性<br>编辑器属性&#x2F;实体持久化属性&#x2F;功能临时属性</p>
+<h2 id="工程倾向"><a href="#工程倾向" class="headerlink" title="工程倾向"></a>工程倾向</h2><p>工程倾向是基于业务环境分析，在框架的冗余区域内求索，合理利用框架设计中的伸缩性、延展性的一种工程实践方案。  </p>
+<h3 id="主要业务逻辑在C-编写"><a href="#主要业务逻辑在C-编写" class="headerlink" title="主要业务逻辑在C#编写"></a>主要业务逻辑在C#编写</h3><ul>
+<li>主要业务逻辑多数依赖Update，且有很多物理&#x2F;拟真的算法。在C#写更加方便且性能友好。  </li>
+<li>在C#层可以方便的统合基于SO的编辑工具（静态属性）和业务逻辑。  </li>
+<li>基于：行为的设计、业务逻辑单元的解耦、属性的全局性质，Lua可以轻松的观测和修改C#层的业务逻辑执行方式。只要对运行期行为数据进行截取&#x2F;修改&#x2F;观测，即可实现热更需求。</li>
+</ul>
+<h3 id="关于领域间的互相访问和调用"><a href="#关于领域间的互相访问和调用" class="headerlink" title="关于领域间的互相访问和调用"></a>关于领域间的互相访问和调用</h3><p>按照框架设计本意，为维持SOLID原则（主要是开闭原则）、维持属性与逻辑解耦，<font color="orange"><strong>原则上实体之间是不能互相访问的</strong></font>。业务逻辑中需要访问其它实体的属性时，只能通过属性系统（FishingPropertyWrapper）访问：这样访问到的属性是可靠的、只读的。而业务逻辑无权写外部属性，更无权调用其它实体的业务逻辑单元。<br>但在实际工程实践中，因为业务领域间的边界会随着需求变化而变化、扩充或融合；在这个动态迭代的背景下，业务逻辑单元间的耦合本身就是不可避免的。受开发资源和时间限制，把所有逻辑耦合都用行为解耦是过于麻烦的甚至是不现实的。同时只要我们有意识的处理业务逻辑耦合，耦合所产生的问题就是可控的、可预期的。因此，<font color="orange"><strong>工程实践上允许实体间的互相访问、<u>非异步</u>业务逻辑间的有限互相调用</strong></font>。  </p>
+<h3 id="管理器-Manager-x2F-System-与封装器-Wrapper"><a href="#管理器-Manager-x2F-System-与封装器-Wrapper" class="headerlink" title="管理器(Manager&#x2F;System)与封装器(Wrapper)"></a>管理器(Manager&#x2F;System)与封装器(Wrapper)</h3><p>在核心玩法框架设计中，是没有“管理器”的概念的。因为所有的属性和行为（数据）都是开放可读的、所有业务逻辑模块都是自解释的，所以它们各自独立存在于框架环境中，并不需要受某个统一逻辑管理。<br>而为了提升具体开发的便捷性，还是需要一个统一出入口协助访问那些宛如一盘散沙的属性、行为，甚至其它实体。这就是本次核心玩法框架中的封装器”Wrapper”。<br>封装器是作为一种工具类存在的，它主要有以下作用：   </p>
+<ul>
+<li>按字典的形式，统一存储框架内所有属性&#x2F;行为&#x2F;实体的引用，方便查询和访问，也提供筛选等高级功能。</li>
+<li>为基础数据单元封装额外接口：如为行为数据单元(FishingBehaviour)额外封装运行中行为类(FishingRuntimeBehaviour)，从而分离编辑器逻辑和运行期逻辑、分离静态数据和动态引用。</li>
+<li>为所有数据或引用提供唯一更新顺序。</li>
+</ul>
+<h3 id="生命周期与状态与逻辑切片"><a href="#生命周期与状态与逻辑切片" class="headerlink" title="生命周期与状态与逻辑切片"></a>生命周期与状态与逻辑切片</h3><p>核心玩法框架中的业务逻辑单元，及其聚合体（领域或实体），在<font color="orange">本质上是没有生命周期的</font>：它只有初始化、销毁；其中的Update方法仅仅是一种逻辑触发入口，而非生命周期的概念。它在<font color="orange">本质上也没有状态的概念</font>：即使有，状态也只作为一种驱动业务逻辑改变的属性或数据而已。<br>而作为替代，所有的业务逻辑单元都有”开始”和”结束”的概念。得益于行为的设计，所有的业务逻辑都可以被行为数据简单的管理：我们可以通过对行为数据的截取&#x2F;修改&#x2F;观测等等，得知并修改业务逻辑单元的开始、运行和结束。这也是另一种意义上的生命周期，这种生命周期更精细，更简洁。   </p>
+<blockquote>
+<p>另一种思考方式：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/67577468">一文带你入门面向切面编程（AOP）</a></p>
+</blockquote>
+<h2 id="5-4-必要工具"><a href="#5-4-必要工具" class="headerlink" title="5.4 必要工具"></a>5.4 必要工具</h2><p>必要工具是在不破坏框架设计基础上，让框架与需求有机结合的润滑剂。必要工具的设计常常是拿来主义的。</p>
+<h3 id="计时器"><a href="#计时器" class="headerlink" title="计时器"></a>计时器</h3><p>计时器管理了整个核心玩法所有属性、行为、条件、业务逻辑单元的更新周期，它部分替代了Unity本身的Update方法。计时器可以支持游戏跳转&#x2F;重开&#x2F;倍速&#x2F;追帧等各种时间相关功能。</p>
+<blockquote>
+<p>思考：计时器管理了业务逻辑单元的更新周期，而渲染单元的更新周期应当如何管理？如果我们希望更少的执行逻辑计算，但不影响渲染流畅性，应该怎么设计？</p>
+</blockquote>
+<h3 id="加载器"><a href="#加载器" class="headerlink" title="加载器"></a>加载器</h3><p>加载器是一个工具类，它负责所有实体的加载和卸载，但它不管理实体。<br>现在核心玩法的加载器是数据驱动的，它会随时响应外部数据的变化并更换核心玩法内使用的实体。</p>
+<h3 id="计算器（随机数、浮点数）"><a href="#计算器（随机数、浮点数）" class="headerlink" title="计算器（随机数、浮点数）"></a>计算器（随机数、浮点数）</h3><p>要实现”输入相同时，输出一定相同”的逻辑黑盒子，必须保证业务逻辑内所有计算使可控的。因此我们需要自己包装专门的随机方法、浮点数计算方法。<br>现在我们的随机方式是使用一个初始随机种子，随每次随机计算递增；随机计算是基于线性同余法和二进制打乱实现的，可以保证较高随机性，较低均匀性，较长周期性。</p>
+<h3 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h3><p>输入是核心玩法框架之外的一个单独模块。核心玩法框架只是受输入的数据驱动而已。<br>所有输入会被严格转换为数据，从而支持在线对决、回放等等功能。</p>
+<h3 id="序列化与反序列化"><a href="#序列化与反序列化" class="headerlink" title="序列化与反序列化"></a>序列化与反序列化</h3><p>存档和读档是帧同步游戏的重点之一；而ECS设计更是让游戏存档可以精细分块。我们需要通过自包装的序列化和反序列化工具实现至少以下功能：</p>
+<ul>
+<li>游戏存档和读档（如：在游戏的第五秒存档，并在有需要时还原回第五秒的游戏数据）</li>
+<li>分领域的存档和读档（如：在某条鱼计算出错时，主机单独存档某条鱼，让另一个客户端重置这条鱼的数据）</li>
+<li>存档对比和矫正（另一个客户端重置这条鱼的数据时，用不易被用户察觉的方式缓动过去）</li>
+<li>加密和压缩（让存档文件尽可能小，又要有可读性的工具支持）</li>
+</ul>
+<p>得益于平铺式的全局属性设计，我们只要把所有属性都序列化，就可以形成游戏存档。读档时再把属性创建回来即可。如果我们是分层式的属性管理，光是描述属性层级关系就已经很困难了。</p>
+<h3 id="池"><a href="#池" class="headerlink" title="池"></a>池</h3><p>因为过度的平铺化，核心玩法运行中，行为数据、属性数据等数据类，会被高频率大量创建、高频率重复访问和修改。因此我们需要对这些数据单元实施精细的池管理。</p>
+<h1 id="六、核心玩法框架-具体设计"><a href="#六、核心玩法框架-具体设计" class="headerlink" title="六、核心玩法框架 - 具体设计"></a>六、核心玩法框架 - 具体设计</h1><p><img src="/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1.png" alt="框架设计图"><br><img src="/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E8%81%94%E6%9C%BA.png" alt="联机方案设计"><br><img src="/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E9%98%B2%E4%BD%9C%E5%BC%8A.png" alt="防作弊方案设计"><br><img src="/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E9%80%9A%E8%AE%AF.png" alt="客户端服务器通讯简图"><br><img src="/%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6_%E5%B1%9E%E6%80%A7.png" alt="属性框架简图"></p>
+<p>附：<a target="_blank" rel="noopener" href="https://paperlens02.github.io/paperlens.github.io/2024/06/26/%E7%9C%9F%E5%AE%9E%E6%80%A7AI%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/">真实性AI设计思路</a></p>
+<h1 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><h3 id="如何处理逻辑时序"><a href="#如何处理逻辑时序" class="headerlink" title="如何处理逻辑时序"></a>如何处理逻辑时序</h3><h3 id="如何管理属性"><a href="#如何管理属性" class="headerlink" title="如何管理属性"></a>如何管理属性</h3><h3 id="AI的设计方向"><a href="#AI的设计方向" class="headerlink" title="AI的设计方向"></a>AI的设计方向</h3><h3 id="如何防作弊"><a href="#如何防作弊" class="headerlink" title="如何防作弊"></a>如何防作弊</h3><h3 id="鱼之间的关系——实体的复杂互相访问问题"><a href="#鱼之间的关系——实体的复杂互相访问问题" class="headerlink" title="鱼之间的关系——实体的复杂互相访问问题"></a>鱼之间的关系——实体的复杂互相访问问题</h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BE%E8%AE%A1/" rel="tag"># 设计</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/23/ShaderTips/" rel="prev" title="ShaderTips">
+      <i class="fa fa-chevron-left"></i> ShaderTips
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/01/17/%E4%B8%9A%E5%8A%A1%E5%8A%9F%E8%83%BD%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1MRCV/" rel="next" title="业务功能框架设计：MRCV">
+      业务功能框架设计：MRCV <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6%E5%86%85%E5%AE%B9%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">一、核心玩法框架内容简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E9%A1%B9%E7%9B%AE%E7%8E%B0%E7%8A%B6"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 项目现状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 项目需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%A1%86%E6%9E%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 框架功能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%B8%B8%E6%88%8F%E4%B8%9A%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">二、游戏业务框架设计思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%80%9D%E7%BB%B4%E6%96%B9%E5%BC%8F1%EF%BC%9A%E4%BB%8E%E9%9C%80%E6%B1%82%E9%80%90%E6%AD%A5%E6%8A%BD%E8%B1%A1%E6%88%90%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 思维方式1：从需求逐步抽象成定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%80%9D%E7%BB%B4%E6%96%B9%E5%BC%8F2%EF%BC%9A%E7%BB%9F%E5%90%88%E6%A1%86%E6%9E%B6%E7%94%A8%E6%88%B7%E4%B8%8E%E8%AE%BE%E8%AE%A1%E8%80%85%E9%97%B4%E7%9A%84%E4%B8%BB%E8%A6%81%E7%9F%9B%E7%9B%BE"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 思维方式2：统合框架用户与设计者间的主要矛盾</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6-%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">3.</span> <span class="nav-text">三、核心玩法框架 - 设计思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E7%9A%84%E2%80%9C%E5%8D%B0%E8%B1%A1%E2%80%9D"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 核心玩法的“印象”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E7%9A%84%E2%80%9C%E5%AE%9A%E4%B9%89%E2%80%9D"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 核心玩法的“定义”</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6-%E8%AE%BE%E8%AE%A1%E8%A6%81%E7%B4%A0"><span class="nav-number">4.</span> <span class="nav-text">四、核心玩法框架 - 设计要素</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E5%AE%9E%E6%97%B6%E5%9C%A8%E7%BA%BF%E5%AF%B9%E5%86%B3"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 实时在线对决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%AD%90"><span class="nav-number">4.1.1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A7%E5%90%8C%E6%AD%A5%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%8D%E6%9D%82%E7%8E%A9%E6%B3%95%E7%9A%84%E5%9C%A8%E7%BA%BF%E5%90%8C%E6%AD%A5%E7%9A%84%EF%BC%9F%EF%BC%88%E5%B8%B8%E8%A7%81%E4%BA%8EMOBA%EF%BC%89%EF%BC%88%E9%A9%AC%E9%87%8C%E5%A5%A5%E5%BB%BA%E9%80%A02%EF%BC%89"><span class="nav-number">4.1.2.</span> <span class="nav-text">帧同步是如何实现复杂玩法的在线同步的？（常见于MOBA）（马里奥建造2）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%8D%E6%9D%82%E7%8E%A9%E6%B3%95%E7%9A%84%E5%9C%A8%E7%BA%BF%E5%90%8C%E6%AD%A5%E7%9A%84%EF%BC%9F%EF%BC%88%E5%B8%B8%E8%A7%81%E4%BA%8EMMORPG%EF%BC%89"><span class="nav-number">4.1.3.</span> <span class="nav-text">状态同步是如何实现复杂玩法的在线同步的？（常见于MMORPG）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ECS%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%8D%E6%9D%82%E7%8E%A9%E6%B3%95%E7%9A%84%E5%9C%A8%E7%BA%BF%E5%90%8C%E6%AD%A5%E7%9A%84%EF%BC%9F%EF%BC%88%E5%AE%88%E6%9C%9B%E5%85%88%E9%94%8B%E3%80%81%E5%96%B7%E5%B0%84%E6%88%98%E5%A3%AB%EF%BC%89"><span class="nav-number">4.1.4.</span> <span class="nav-text">ECS是如何实现复杂玩法的在线同步的？（守望先锋、喷射战士）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E6%88%91%E4%BB%AC%E7%9A%84%E5%B7%A5%E4%BD%9C%E9%87%8D%E7%82%B9%E5%9C%A8%E5%93%AA%E9%87%8C%EF%BC%9F%E8%83%BD%E5%80%9F%E9%89%B4%E5%93%AA%E4%BA%9B%E6%80%9D%E8%B7%AF%EF%BC%9F"><span class="nav-number">4.1.5.</span> <span class="nav-text">总结：我们的工作重点在哪里？能借鉴哪些思路？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E5%B7%A5%E5%85%B7%E5%8C%96"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 工具化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6-%E8%AE%BE%E8%AE%A1%E7%AE%80%E4%BB%8B"><span class="nav-number">5.</span> <span class="nav-text">五、核心玩法框架 - 设计简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E8%AE%BE%E8%AE%A1%E5%85%83"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 设计元</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-number">5.1.1.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA"><span class="nav-number">5.1.2.</span> <span class="nav-text">行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E5%8D%95%E5%85%83"><span class="nav-number">5.1.3.</span> <span class="nav-text">业务逻辑单元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6"><span class="nav-number">5.1.4.</span> <span class="nav-text">条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BD%93"><span class="nav-number">5.1.5.</span> <span class="nav-text">实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">5.1.6.</span> <span class="nav-text">数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 设计原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E5%8C%96%E3%80%81%E5%B9%B3%E9%93%BA%E5%BC%8F"><span class="nav-number">5.2.1.</span> <span class="nav-text">组件化、平铺式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%80%BE%E5%90%91"><span class="nav-number">5.3.</span> <span class="nav-text">工程倾向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E5%9C%A8C-%E7%BC%96%E5%86%99"><span class="nav-number">5.3.1.</span> <span class="nav-text">主要业务逻辑在C#编写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E9%A2%86%E5%9F%9F%E9%97%B4%E7%9A%84%E4%BA%92%E7%9B%B8%E8%AE%BF%E9%97%AE%E5%92%8C%E8%B0%83%E7%94%A8"><span class="nav-number">5.3.2.</span> <span class="nav-text">关于领域间的互相访问和调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E5%99%A8-Manager-x2F-System-%E4%B8%8E%E5%B0%81%E8%A3%85%E5%99%A8-Wrapper"><span class="nav-number">5.3.3.</span> <span class="nav-text">管理器(Manager&#x2F;System)与封装器(Wrapper)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8E%E7%8A%B6%E6%80%81%E4%B8%8E%E9%80%BB%E8%BE%91%E5%88%87%E7%89%87"><span class="nav-number">5.3.4.</span> <span class="nav-text">生命周期与状态与逻辑切片</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-%E5%BF%85%E8%A6%81%E5%B7%A5%E5%85%B7"><span class="nav-number">5.4.</span> <span class="nav-text">5.4 必要工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%97%B6%E5%99%A8"><span class="nav-number">5.4.1.</span> <span class="nav-text">计时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">5.4.2.</span> <span class="nav-text">加载器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%99%A8%EF%BC%88%E9%9A%8F%E6%9C%BA%E6%95%B0%E3%80%81%E6%B5%AE%E7%82%B9%E6%95%B0%EF%BC%89"><span class="nav-number">5.4.3.</span> <span class="nav-text">计算器（随机数、浮点数）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5"><span class="nav-number">5.4.4.</span> <span class="nav-text">输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">5.4.5.</span> <span class="nav-text">序列化与反序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%A0"><span class="nav-number">5.4.6.</span> <span class="nav-text">池</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E6%A0%B8%E5%BF%83%E7%8E%A9%E6%B3%95%E6%A1%86%E6%9E%B6-%E5%85%B7%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="nav-number">6.</span> <span class="nav-text">六、核心玩法框架 - 具体设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">7.</span> <span class="nav-text">Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91%E6%97%B6%E5%BA%8F"><span class="nav-number">7.0.1.</span> <span class="nav-text">如何处理逻辑时序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86%E5%B1%9E%E6%80%A7"><span class="nav-number">7.0.2.</span> <span class="nav-text">如何管理属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E5%90%91"><span class="nav-number">7.0.3.</span> <span class="nav-text">AI的设计方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%98%B2%E4%BD%9C%E5%BC%8A"><span class="nav-number">7.0.4.</span> <span class="nav-text">如何防作弊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%B1%BC%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB%E2%80%94%E2%80%94%E5%AE%9E%E4%BD%93%E7%9A%84%E5%A4%8D%E6%9D%82%E4%BA%92%E7%9B%B8%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98"><span class="nav-number">7.0.5.</span> <span class="nav-text">鱼之间的关系——实体的复杂互相访问问题</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="paperlens"
+      src="/img/head.jpg">
+  <p class="site-author-name" itemprop="name">paperlens</p>
+  <div class="site-description" itemprop="description">一个一个一个一个一个一个一个</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">paperlens</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
